@@ -3,7 +3,7 @@ import cobra
 from cobra import Reaction, Metabolite
 
 
-def deleteSBP(): # ---- hello
+def deleteSBP():
     print("deleting SBP reaction ..... ", end = " ")
     sbp_reaction = model.reactions.SBP
     sbp_reaction.knock_out()
@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
 
 
-    #################################################################################
+    ###################### ignore this part ################################################
     # print(model.metabolites.get_by_id('bpg').formula)
 
     print('edited model: ', model.optimize())
