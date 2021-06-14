@@ -3,7 +3,7 @@ import cobra
 from cobra import Reaction, Metabolite
 
 
-def deleteSBP():
+def deleteSBP(): # ---- hello
     print("deleting SBP reaction ..... ", end = " ")
     sbp_reaction = model.reactions.SBP
     sbp_reaction.knock_out()
