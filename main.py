@@ -129,6 +129,9 @@ if __name__ == '__main__':
     addReaction('R14', 'R14', dictR14)
 
 
+    # Saving new model
+    cobra.io.mat.save_matlab_model(model, 'edited_model_iJB785.mat')
+
     ###################### ignore this part ################################################
     # print(model.metabolites.get_by_id('bpg').formula)
 
@@ -136,6 +139,8 @@ if __name__ == '__main__':
 
     # # print(sbp_reaction.genes)
     # gene0505 = model.genes.get_by_id("Synpcc7942_0505")
+
+
 
 
 
