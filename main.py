@@ -1,7 +1,7 @@
 # importing library
 import cobra
 from cobra import Reaction, Metabolite
-
+import saveMat
 
 def deleteSBP():
     print("deleting SBP reaction ..... ", end= " ")
@@ -130,8 +130,7 @@ if __name__ == '__main__':
 
 
     # Saving new model
-    cobra.io.mat.save_matlab_model(model, 'edited_model_iJB785.mat')
-
+    saveMat.new_save_matlab_model(model, 'edited_Model_iJB785.mat')
     ###################### ignore this part ################################################
     # print(model.metabolites.get_by_id('bpg').formula)
 
