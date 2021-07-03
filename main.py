@@ -1,10 +1,15 @@
 # importing library
+import textwrap
+
 import cobra
 from cobra import Reaction, Metabolite
 # import computeResult
-from cobra.flux_analysis import single_reaction_deletion
+from cobra.flux_analysis import single_reaction_deletion, flux_variability_analysis
 
 import saveMat
+import sys
+
+
 
 def deleteSBP():
     print("deleting SBP reaction: ", end= " ")
@@ -25,16 +30,41 @@ def addReaction(rID, rName, rDict):
     reaction.upper_bound = 1000.  # This is the default
     # reaction.objective_coefficient = 0.  # this is the default
     reaction.add_metabolites(rDict)
-    print('adding ', reaction.name, ': ', reaction.reaction)
     model.add_reaction(reaction)
+    # printing result
+    printReaction = "adding " + reaction.name + ": " + reaction.reaction
+    print('{:<50}{}'.format(printReaction, "========== FBA: "), end="")
+    ###### STEP 10 #####
+    with model:
+        model.objective = reaction.name
+        print('{:<20}'.format(model.slim_optimize()))
+
+def computeResult():
+    ###### STEP 16  -- Exchange Reaction #####
+    print('\n\n ---------------- STEP 16 Exchange Reaction -------------')
+    print("Number of Exchange Reaction: ", len(model.exchanges))
+
+    ###### STEP 17  -- Exchange Reaction #####
+    print('\n\n ---------------- STEP 17 Consisten/Inconsistent Reaction -------------')
+    consistent_model = cobra.flux_analysis.fastcc(model)
+    print('Number of consistent reactions: ', len(consistent_model.reactions))
 
 #   main function
 if __name__ == '__main__':
+    # Write result to a file
+    orig_stdout = sys.stdout
+    f = open('out.txt', 'w')
+    sys.stdout = f
+
+
     global model
     model = cobra.io.load_matlab_model('Model_iJB785_noSpace.mat')
     print('original model: ', model.optimize())
     deleteSBP()
     # saveMat.new_save_matlab_model(model, 'deletedSBP_Model_iJB785.mat')
+
+    #### rTCA Pathway
+    print('\n\n ---------------- rTCA Pathway -------------')
     # R1
     dpg13_c = Metabolite(
         '13dpg_c',
@@ -136,8 +166,11 @@ if __name__ == '__main__':
     addReaction('R14', 'R14', dictR14)
 
 
+    ############## Revalidatiing after edition ##############
+    computeResult()
+
     # Saving new model
-    saveMat.new_save_matlab_model(model, 'edited_Model_iJB785.mat')
+    # saveMat.new_save_matlab_model(model, 'edited_Model_iJB785.mat')
 
 
     ###################### ignore this part ################################################
@@ -147,6 +180,10 @@ if __name__ == '__main__':
     # # print(sbp_reaction.genes)
     # gene0505 = model.genes.get_by_id("Synpcc7942_0505")
 
+
+    ###################### Close the file ##################################################
+    sys.stdout = orig_stdout
+    f.close()
 
 
 
