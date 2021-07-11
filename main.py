@@ -4,7 +4,8 @@ import textwrap
 import cobra
 from cobra import Reaction, Metabolite
 # import computeResult
-from cobra.flux_analysis import single_reaction_deletion, flux_variability_analysis
+from cobra.flux_analysis import single_reaction_deletion, flux_variability_analysis, single_gene_deletion
+from cobra.manipulation import remove_genes
 
 import saveMat
 import sys
@@ -12,6 +13,7 @@ import sys
 
 
 def deleteSBP():
+    initalGeneNumber = len(model.genes)
     print("deleting SBP reaction: ", end= " ")
     print(len(model.reactions), end=" ----> ")
     sbp_reaction = model.reactions.get_by_id("SBP")
@@ -19,8 +21,14 @@ def deleteSBP():
     # sbp_reaction.knock_out()
     model.remove_reactions([sbp_reaction])
     # if ((sbp_reaction.lower_bound == 0) and (sbp_reaction.upper_bound == 0)):
-    print(len(model.reactions), end=" ..... ")
-    print("DONE")
+    print(len(model.reactions), end=" ..... DONE\n")
+
+    print("\n---------------- Deleting the  SBP reaction gene (Synpcc7942_0505) ----------------")
+    # print(single_gene_deletion(model, [model.genes.get_by_id("Synpcc7942_0505")]))    # simulating gene deletion
+    remove_genes(model, sbp_reaction.genes)                                           # deleting the Synpcc7942_0505 gene
+    print("Number of genes: ", initalGeneNumber, "---->", len(model.genes), "..... DONE")
+
+
 
 def addReaction(rID, rName, rDict):
     reaction = Reaction(rID)
@@ -41,7 +49,7 @@ def addReaction(rID, rName, rDict):
 
 def computeResult():
     ###### STEP 16  -- Exchange Reaction #####
-    print('\n\n ---------------- STEP 16 Exchange Reaction -------------')
+    print('\n\n---------------- STEP 16 Exchange Reaction -------------')
     print("Number of Exchange Reaction: ", len(model.exchanges))
 
     ###### STEP 17  -- Exchange Reaction #####
@@ -59,9 +67,10 @@ if __name__ == '__main__':
 
     global model
     model = cobra.io.load_matlab_model('Model_iJB785_noSpace.mat')
-    print('original model: ', model.optimize())
+    print('original model: ', model.optimize(), '\n')
+    remove_genes(model, [model.genes.get_by_id("Synpcc7942_1448")])
     deleteSBP()
-    # saveMat.new_save_matlab_model(model, 'deletedSBP_Model_iJB785.mat')
+    saveMat.new_save_matlab_model(model, 'deletedSBP_Model_iJB785.mat')
 
     #### rTCA Pathway
     print('\n\n ---------------- rTCA Pathway -------------')
@@ -170,12 +179,12 @@ if __name__ == '__main__':
     computeResult()
 
     # Saving new model
-    # saveMat.new_save_matlab_model(model, 'edited_Model_iJB785.mat')
+    saveMat.new_save_matlab_model(model, 'edited_Model_iJB785.mat')
 
 
     ###################### ignore this part ################################################
     # print(model.metabolites.get_by_id('bpg').formula)
-    print('edited model: ', model.optimize())
+    print('\nedited model: ', model.optimize())
     # print("medium", model.medium)
     # # print(sbp_reaction.genes)
     # gene0505 = model.genes.get_by_id("Synpcc7942_0505")
