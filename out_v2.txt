@@ -1,0 +1,33 @@
+original model:  <Solution 0.054 at 0x1aed7a12c88> 
+
+deleting SBP reaction:  850 ----> 849 ..... DONE
+
+---------------- Deleting the  SBP reaction gene (Synpcc7942_0505) ----------------
+Number of genes:  785 ----> 785 ..... DONE
+
+
+ ---------------- rTCA Pathway -------------
+adding R1: g3p_c --> 13dpg_c                      ========== FBA: 0.04195046770360178 
+adding R2: 13dpg_c --> 3pg_c                      ========== FBA: 102.08999999999907  
+adding R3: 3pg_c --> 2pg_c                        ========== FBA: 1000.0              
+adding R4: 2pg_c --> pep_c                        ========== FBA: 102.01299218164775  
+adding R5: glu__L_c + oaa_c --> akg_c + asp__L_c  ========== FBA: 1000.0              
+adding R6: akg_c --> icit_c                       ========== FBA: 761.56466996686     
+adding R7: icit_c --> cit_c                       ========== FBA: 1000.0              
+adding R8: cit_c --> accoa_c + oaa_c              ========== FBA: 3.6773208220338367e-06
+adding R9: accoa_c --> pyr_c                      ========== FBA: 1000.0              
+adding R10: g3p_c + pyr_c --> ddgp_c              ========== FBA: 0.0                 
+adding R11: ddgp_c --> 6pgc_c                     ========== FBA: 1000.0              
+adding R12: 6pgc_c --> glcn_c                     ========== FBA: 0.0                 
+adding R13: glcn_c --> ru5p__D_c                  ========== FBA: 1000.0              
+adding R14: ru5p__D_c --> rb15bp_c                ========== FBA: 497.51243781094684  
+
+
+---------------- STEP 16 Exchange Reaction -------------
+Number of Exchange Reaction:  44
+
+
+ ---------------- STEP 17 Consisten/Inconsistent Reaction -------------
+Number of consistent reactions:  752
+
+edited model:  <Solution 0.193 at 0x1aed83aa4c8>
