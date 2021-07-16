@@ -14,19 +14,23 @@ import sys
 
 def deleteSBP():
     initalGeneNumber = len(model.genes)
+    print("\n---------------- Deleting the  SBP reaction ----------------")
     print("deleting SBP reaction: ", end= " ")
     print(len(model.reactions), end=" ----> ")
     sbp_reaction = model.reactions.get_by_id("SBP")
     # single_reaction_deletion(model, [sbp_reaction])
-    # sbp_reaction.knock_out()
+    # sbp_reaction.knock_out()     # if ((sbp_reaction.lower_bound == 0) and (sbp_reaction.upper_bound == 0)):
     model.remove_reactions([sbp_reaction])
-    # if ((sbp_reaction.lower_bound == 0) and (sbp_reaction.upper_bound == 0)):
     print(len(model.reactions), end=" ..... DONE\n")
+    deletedSBP_model = model.optimize()
+    print('Growth (after deleting SBP): ', deletedSBP_model.objective_value, '\n')
 
     print("\n---------------- Deleting the  SBP reaction gene (Synpcc7942_0505) ----------------")
-    # print(single_gene_deletion(model, [model.genes.get_by_id("Synpcc7942_0505")]))    # simulating gene deletion
-    remove_genes(model, sbp_reaction.genes)                                           # deleting the Synpcc7942_0505 gene
+    # single_gene_deletion(model, [model.genes.get_by_id("Synpcc7942_0505")])    # simulating gene deletion
+    remove_genes(model, sbp_reaction.genes)                                  # deleting the Synpcc7942_0505 gene
     print("Number of genes: ", initalGeneNumber, "---->", len(model.genes), "..... DONE")
+    deletedSBPgene_model = model.optimize()
+    print("Growth (after deleting SBP's gene): ", deletedSBPgene_model.objective_value, '\n')
 
 
 
@@ -41,11 +45,13 @@ def addReaction(rID, rName, rDict):
     model.add_reaction(reaction)
     # printing result
     printReaction = "adding " + reaction.name + ": " + reaction.reaction
-    print('{:<50}{}'.format(printReaction, "========== FBA: "), end="")
-    ###### STEP 10 #####
-    with model:
-        model.objective = reaction.name
-        print('{:<20}'.format(model.slim_optimize()))
+    print(printReaction)
+    # print('{:<50}{}'.format(printReaction, "========== FBA: "), end="")
+
+    # ###### STEP 10 #####
+    # with model:
+    #     model.objective = reaction.name
+    #     print('{:<20}'.format(model.slim_optimize()))
 
 def computeResult():
     ###### STEP 16  -- Exchange Reaction #####
@@ -61,19 +67,23 @@ def computeResult():
 if __name__ == '__main__':
     # Write result to a file
     orig_stdout = sys.stdout
-    f = open('out.txt', 'w')
+    f = open('test.txt', 'w')
     sys.stdout = f
-
 
     global model
     model = cobra.io.load_matlab_model('Model_iJB785_noSpace.mat')
-    print('original model: ', model.optimize(), '\n')
-    remove_genes(model, [model.genes.get_by_id("Synpcc7942_1448")])
-    deleteSBP()
-    saveMat.new_save_matlab_model(model, 'deletedSBP_Model_iJB785.mat')
+    original_model = model.optimize()
+    print('Growth (original model): ', original_model.objective_value, '\n')
 
-    #### rTCA Pathway
-    print('\n\n ---------------- rTCA Pathway -------------')
+    # =============== Deleting SBP =========================
+    deleteSBP()
+
+
+    # =============== Saving matlab file of deleting SBP =========================
+    # saveMat.new_save_matlab_model(model, 'deletedSBP_Model_iJB785_v2.mat')
+
+    # =============== Adding rTCA Pathway =========================
+    print('\n---------------- Adding rTCA Pathway -------------')
     # R1
     dpg13_c = Metabolite(
         '13dpg_c',
@@ -135,10 +145,10 @@ if __name__ == '__main__':
 
     # R10
     ddgp_c = Metabolite(
-        'ddgp_c',
-        formula='C6H8O9P',
-        name='2_dehydro_3_deoxy_D_gluconate_6_phosphate',
-        compartment='c')
+            'ddgp_c',
+            formula='C6H8O9P',
+            name='2_dehydro_3_deoxy_D_gluconate_6_phosphate',
+            compartment='c')
     dictR10 = {model.metabolites.get_by_id("g3p_c"): -1,
               model.metabolites.get_by_id("pyr_c"): -1,
               ddgp_c: 1}
@@ -174,27 +184,44 @@ if __name__ == '__main__':
                model.metabolites.get_by_id("rb15bp_c"): 1}
     addReaction('R14', 'R14', dictR14)
 
+    rTCA_model = model.optimize()  # solution is stored at model.solution
+    print("Growth (after adding rTCA pathway): ", rTCA_model.objective_value)
 
-    ############## Revalidatiing after edition ##############
-    computeResult()
+    # =============== Overexpressed TALA genes/reaction =========================
+    print("\n---------------- Overexpressing TALA genes/reaction ----------------")
+    # ================ Start to overexpress =====================================
+    tala_reaction = model.reactions.get_by_id("TALA")
+    fva = flux_variability_analysis(model, reaction_list=[tala_reaction], fraction_of_optimum=0.9)
+    print("----- Reaction optimized range ------")
+    print(fva)
 
-    # Saving new model
-    saveMat.new_save_matlab_model(model, 'edited_Model_iJB785.mat')
+    model.reactions.get_by_id('TALA').lower_bound = -2
+    overexpress_model = model.optimize()  # solution is stored at model.solution
+    print("Growth (after overexpressing TALA): ", overexpress_model.objective_value)
 
+    # =============== Revalidating after edition  =========================
+    # computeResult()
 
-    ###################### ignore this part ################################################
-    # print(model.metabolites.get_by_id('bpg').formula)
-    print('\nedited model: ', model.optimize())
-    # print("medium", model.medium)
-    # # print(sbp_reaction.genes)
-    # gene0505 = model.genes.get_by_id("Synpcc7942_0505")
+    # =============== Saving New Model  =========================
+    # saveMat.new_save_matlab_model(model, 'edited_Model_iJB785_v2.mat')
 
+    # =============== Print Final Growth  =========================
+    print('\n\n---------------- Final Model -------------')
+    final_model = model.optimize()
+    print('Growth (Final) : ', final_model.objective_value)
 
-    ###################### Close the file ##################################################
+    # =============== Close the file  =========================
     sys.stdout = orig_stdout
     f.close()
 
 
+
+
+    ###################### ignore this part ################################################
+    # print(model.metabolites.get_by_id('bpg').formula)
+    # print("medium", model.medium)
+    # # print(sbp_reaction.genes)
+    # gene0505 = model.genes.get_by_id("Synpcc7942_0505")
 
 
     # import numpy as np
