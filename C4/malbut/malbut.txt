@@ -1,0 +1,39 @@
+Restricted license - for non-production use only - expires 2022-01-13
+Model using:  <class 'optlang.gurobi_interface.Model'>
+Growth (original model):  0.05403214667050067 
+
+Number of Genes:  785
+
+---------------- Deleting the  SBP reaction ----------------
+deleting SBP reaction:  850 ----> 849 ..... DONE
+Growth (after deleting SBP):  0.054032146670504544 
+
+
+---------------- Deleting the  SBP reaction gene (Synpcc7942_0505) ----------------
+Number of genes:  785 ----> 784 ..... DONE
+Growth (after deleting SBP's gene):  0.054032146670504544 
+
+
+---------------- Adding Butanol Biosynthesis Pathway -------------
+adding R2: 2 accoa_c --> aAcoa_c + coa_c          --- gene: frozenset()
+adding R3: accoa_c + malcoa_c --> aAcoa_c + co2_c --- gene: frozenset({<Gene NphT7 at 0x2015db4bec8>})
+adding R4: aAcoa_c + h_c + nadph_c --> nadp_c + ohbcoa_c--- gene: frozenset({<Gene phaB at 0x2015db4b1c8>})
+adding R5: ohbcoa_c --> crcoa_c + h2o_c           --- gene: frozenset({<Gene Ccr at 0x2015db4b508>})
+adding R6: crcoa_c + h_c + nadh_c --> butcoa_c + nad_c--- gene: frozenset({<Gene PhaJ at 0x2015db4ba48>})
+adding R7: butcoa_c + h2o_c --> but_c + coa_c     --- gene: frozenset({<Gene PduP at 0x2015db4b888>})
+adding R8: atp_c + but_c + nadph_c --> amp_c + butaldh_c + nadp_c + 2 pi_c--- gene: frozenset({<Gene Slr1192 at 0x2015daee848>})
+adding R9: butaldh_c + h_c + nadh_c --> nad_c + nbut_c--- gene: frozenset()
+Growth (after adding Glycoaldehyde Addition pathway):  0.05403214667050497
+
+---------------- Adding Malyl-CoA-Glycerate Artificial Cycle + PK Bypass -------------
+adding R20: h_c + nadh_c + oaa_c --> mal__L_c + nad_c--- gene: frozenset({<Gene mdh at 0x2015daeea08>})
+adding R30: atp_c + coa_c + mal__L_c --> adp_c + malycoa_c + pi_c--- gene: frozenset({<Gene mtk at 0x2015db098c8>})
+adding R40: malycoa_c --> accoa_c + glx_c         --- gene: frozenset({<Gene mcl at 0x2015db09548>})
+adding R50: 2 glx_c --> 2h3oppan_c + co2_c        --- gene: frozenset({<Gene gcl at 0x2015db09248>})
+adding R100: actp_c + coa_c --> accoa_c + pi_c    --- gene: frozenset({<Gene PtaBs at 0x2015db09088>})
+Growth (after adding Malyl-CoA-Glycerate pathway):  0.05403214667050556
+
+
+---------------- Final Model -------------
+Growth (Final) :  0.05403214667050556
+Number of Genes:  795
