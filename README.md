@@ -42,6 +42,10 @@ b. mat file for matlab use of model
 
 c. text file indicating the applicable reaction changes to the model
 
+**output_model**
+
+Includes all models in both json format (for Escher visualization) and mat format (for matlab)
+
 **Other**
 
 deletedSBP_Model_iJB785_v1.mat attempts to delete SBPase using remove_genes function while deletedSBP_Model_iJB785_v2.mat attempts to delete SBPase using singleGeneDeletion in python. The models can be used in matlab. The edited_Model_iJB785_v1 (or v2).mat follows the same premise.
