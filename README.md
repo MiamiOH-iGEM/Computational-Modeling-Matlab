@@ -41,3 +41,10 @@ a. json file for Escher visualization of model
 b. mat file for matlab use of model
 
 c. text file indicating the applicable reaction changes to the model
+
+**Other**
+
+deletedSBP_Model_iJB785_v1.mat attempts to delete SBPase using remove_genes function while deletedSBP_Model_iJB785_v2.mat attempts to delete SBPase using singleGeneDeletion in python. The models can be used in matlab. The edited_Model_iJB785_v1 (or v2).mat follows the same premise.
+
+main.py is the most updated python script used to create all models excluding the models for the C4 collaboration. The attempt to overexpress TALA is also included in this but was not used.
+
