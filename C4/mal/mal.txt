@@ -1,0 +1,28 @@
+Restricted license - for non-production use only - expires 2022-01-13
+Model using:  <class 'optlang.gurobi_interface.Model'>
+Growth (original model):  0.05403214667050067 
+
+Number of Genes:  785
+
+---------------- Deleting the  SBP reaction ----------------
+deleting SBP reaction:  850 ----> 849 ..... DONE
+Growth (after deleting SBP):  0.054032146670504544 
+
+
+---------------- Deleting the  SBP reaction gene (Synpcc7942_0505) ----------------
+Number of genes:  785 ----> 784 ..... DONE
+Growth (after deleting SBP's gene):  0.054032146670504544 
+
+
+---------------- Adding Malyl-CoA-Glycerate Artificial Cycle + PK Bypass -------------
+adding R20: h_c + nadh_c + oaa_c --> mal__L_c + nad_c--- gene: frozenset({<Gene mdh at 0x1efa750d4c8>})
+adding R30: atp_c + coa_c + mal__L_c --> adp_c + malycoa_c + pi_c--- gene: frozenset({<Gene mtk at 0x1efa708adc8>})
+adding R40: malycoa_c --> accoa_c + glx_c         --- gene: frozenset({<Gene mcl at 0x1efa7206308>})
+adding R50: 2 glx_c --> 2h3oppan_c + co2_c        --- gene: frozenset({<Gene gcl at 0x1efa7206608>})
+adding R100: actp_c + coa_c --> accoa_c + pi_c    --- gene: frozenset({<Gene PtaBs at 0x1efa7206ec8>})
+Growth (after adding Malyl-CoA-Glycerate pathway):  0.05403214667050556
+
+
+---------------- Final Model -------------
+Growth (Final) :  0.05403214667050556
+Number of Genes:  789

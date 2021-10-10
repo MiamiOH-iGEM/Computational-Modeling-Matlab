@@ -1,0 +1,31 @@
+Restricted license - for non-production use only - expires 2022-01-13
+Model using:  <class 'optlang.gurobi_interface.Model'>
+Growth (original model):  0.05403214667050067 
+
+Number of Genes:  785
+
+---------------- Deleting the  SBP reaction ----------------
+deleting SBP reaction:  850 ----> 849 ..... DONE
+Growth (after deleting SBP):  0.054032146670504544 
+
+
+---------------- Deleting the  SBP reaction gene (Synpcc7942_0505) ----------------
+Number of genes:  785 ----> 784 ..... DONE
+Growth (after deleting SBP's gene):  0.054032146670504544 
+
+
+---------------- Adding Butanol Biosynthesis Pathway -------------
+adding R2: 2 accoa_c --> aAcoa_c + coa_c          --- gene: frozenset()
+adding R3: accoa_c + malcoa_c --> aAcoa_c + co2_c --- gene: frozenset({<Gene NphT7 at 0x23bc237ad88>})
+adding R4: aAcoa_c + h_c + nadph_c --> nadp_c + ohbcoa_c--- gene: frozenset({<Gene phaB at 0x23bc237aa48>})
+adding R5: ohbcoa_c --> crcoa_c + h2o_c           --- gene: frozenset({<Gene Ccr at 0x23bc237a288>})
+adding R6: crcoa_c + h_c + nadh_c --> butcoa_c + nad_c--- gene: frozenset({<Gene PhaJ at 0x23bc237a7c8>})
+adding R7: butcoa_c + h2o_c --> but_c + coa_c     --- gene: frozenset({<Gene PduP at 0x23bc237a608>})
+adding R8: atp_c + but_c + nadph_c --> amp_c + butaldh_c + nadp_c + 2 pi_c--- gene: frozenset({<Gene Slr1192 at 0x23bc23218c8>})
+adding R9: butaldh_c + h_c + nadh_c --> nad_c + nbut_c--- gene: frozenset()
+Growth (after adding Glycoaldehyde Addition pathway):  0.05403214667050497
+
+
+---------------- Final Model -------------
+Growth (Final) :  0.05403214667050497
+Number of Genes:  790
